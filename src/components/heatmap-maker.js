@@ -18,14 +18,25 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { useDemoData } from '@mui/x-data-grid-generator';
+
+import dayjs, { Dayjs } from 'dayjs';
+
 //Endpoint
 import {getHeatMapendpoint, getheatmapdata} from './endpoint'
+
+//Slider
+import 'toolcool-range-slider';
 
 
 
 
 var heatmapInstance;
 var points=[];
+
+//slide
+var sliderStrength;
 
 function Heatmap() {
 
@@ -54,8 +65,9 @@ function Heatmap() {
       };
       var canvas=document.getElementById("HeatMapCanvas");
       canvas.style.backgroundImage = 'url(' + reader.result + ')';
-      canvas.style.width="720px";
+      canvas.style.width="720p";
       canvas.style.height="480px";
+      canvas.style.objectFit="contain"
       canvas.style.backgroundSize="100%";
       heatmapInstance = h337.create(config);
       //var dataPoint = [{ x: 13, y: 10,value: 86 }];
@@ -128,7 +140,7 @@ function Heatmap() {
 
   return(
     <div>
-     <label>Upload Image</label><br/>
+     {/* <label>Upload Image</label><br/> */}
     <input className="imageuploadbutton" type="file" accept="image/*" onChange={handleImageUpload} />
     <div className="preview" id="HeatMapCanvas">
     <canvas id="drawerPoint">
@@ -153,9 +165,9 @@ function Heatmap() {
      
         setCount(state => state + 1);
         var data={};
-        const endpoint = getHeatMapendpoint('localhost',5000,'27-04-2023','120000','130000',points, strenth,'Heatmapstore')
-        //const endpoint = getHeatMapendpoint('localhost',5000,'09-05-2023','35710','40513',points, strenth,'Heatmapstore1')
-        //const endpoint = getHeatMapendpoint('localhost',5000,'08-05-2023','182300','182400',points, strenth,'Heatmapstore2')
+        const endpoint = getHeatMapendpoint('localhost',5000,'27-04-2023','120000','130000',points, strength,'Heatmapstore')
+        //const endpoint = getHeatMapendpoint('localhost',5000,'09-05-2023','35710','40513',points, strength,'Heatmapstore1')
+        //const endpoint = getHeatMapendpoint('localhost',5000,'08-05-2023','182300','182400',points, strength,'Heatmapstore2')
         const success = await getheatmapdata(endpoint);
         console.log({data:success})
         heatmapInstance.setData({max:100,data:success});
@@ -222,12 +234,12 @@ function UploadMetaFile() {
       <>
       <Box sx={{ width: 300 }}>
         <Slider
-          value={value}
+          value={value} //value [1,24] to be take as time
           onChange={handleChange}
           valueLabelDisplay="auto"
           min={0}
           max={24}
-          step={3}
+          step={1}
           marks={[
             { value: 0, label: '00' },
             { value: 3, label: '03' },
@@ -248,12 +260,14 @@ function UploadMetaFile() {
 
   //Strength Slider
 
-  const [strenth, setStrength] = useState(20);
+
+
+  const [strength, setStrength] = useState(20);
 
   const onStrengthChange = (e) =>{
     setStrength(state => e.target.value)
   }
-
+  
   function StrengthSlider() {
     return (
       <Box width={300}>
@@ -263,10 +277,16 @@ function UploadMetaFile() {
           aria-label="Small"
           valueLabelDisplay="auto"
         /> */}
-        <Slider defaultValue={50} aria-label="Default" valueLabelDisplay="auto" onChange={onStrengthChange}/>
+        <Slider value={strength} onChange={onStrengthChange} defaultValue={50} aria-label="Default" valueLabelDisplay="auto" />
+        
       </Box>
-      );
-    }
+      
+      
+    );
+
+   
+    
+  }
 
   // Dropdown Function
   function SelectSite() {
@@ -324,22 +344,50 @@ function SelectCamera() {
     )
   );
 }
+
+
 //From Date Picker Function
+
+
 function FromDate() {
+  
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker />
+      <p>From</p>
+      <DatePicker/>
     </LocalizationProvider>
   );
 }
 
 function ToDate() {
+  
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker />
+      <p>To</p>
+      <DatePicker 
+       />
     </LocalizationProvider>
   );
 }
+
+
+//Table
+// function DataLog() {
+//   const { data } = useDemoData({
+//     dataSet: "none",
+//     rowLength: 100,
+//     maxColumns: 6,
+//   });
+
+//   return (
+    
+//     <div className='table' style={{ height: 400, width: "100%" }}>
+//       <DataGrid {...data} slots={{ toolbar: GridToolbar }} />
+//     </div>
+//   );
+// }
+
+
 
 
 // Main Return
@@ -349,32 +397,46 @@ function ToDate() {
       {/* Left Container */}
     <div className='container left'>
       {/* Title */}
-      <h3>Heatmap</h3>
+      <h3>Heat Map</h3>
       {/* DropDown */}
-      <div>
+     <div className="selectcamera">
       <SelectSite /> 
-      <SelectCamera className="selectcamera"/>
+      <SelectCamera />
       <UploadImage/>
       </div>
+    </div>
+
+    <div className='center'>
+
     </div>
 
     <div className='rightPannel right'>
     <div className='rightPannelContent'>
     <h3>Analysis Config</h3>
-    <FromDate/>
-    <ToDate/>
-     <div className="RangeSlider">
+    <div className='date'>
+    <div class="FromDate"><FromDate/></div>
+    <div class="Fromto"><ToDate/></div>
+    </div>
+    <div className="RangeSlider">
      <p>Set Dwell Time in Min</p>
      <MyRangeSlider />
-
-     <p>Set Strength</p>
+     <div className='SmallText'>
+      <div>{sliderStrength}</div>
+     <p>Total Tracks </p>
+     <p>Total Dwell Points</p>
+     </div>
+     </div>
+     <div className="StrengthSlider">
+     <p>Strength</p>
      <StrengthSlider/>
-     
-     
+     </div>
+     {/* <div className='datalogtable'>
+      <DataLog/>
+      </div> */}
+     <div className="GenHeat">
+     <HeatMapButton/>
      </div>
 
-
-     <HeatMapButton className="GenHeat"/>
 
 
     </div>
