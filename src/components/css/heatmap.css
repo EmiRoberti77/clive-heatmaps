@@ -1,0 +1,118 @@
+body {
+    background-image: linear-gradient(
+    to bottom,
+    rgba(20, 52, 155, 0.874),
+    rgba(0, 9, 40, 1)
+  );
+  color:#fff;
+  }
+
+  #fullcontainer {
+    height:100vh;
+    width:100%;
+  }
+  
+  #fullcontainer > .left {
+    float:left;
+    margin-left: 50px;
+    position:relative;
+    margin-top: 30px;
+   
+  }
+  
+  #fullcontainer > .right {
+    float:right;
+   
+  }
+
+ 
+  .rightPannel{
+    color: black;
+    position: relative;
+    text-align: left;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin-right: 0;
+    background-color: #fff;
+
+  }
+
+  
+
+  .rightPannelContent{
+    margin-top: 100px;
+    width: 100%;
+    margin-left: 50px;
+    
+
+  }
+
+  .RangeSlider{
+    display: flex;
+    flex-direction: column;
+    
+  }
+
+
+
+.preview{
+    position:relative;
+    margin-top: 25px;
+    border:1px solid #afafaf;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    height: 480px;
+    width: 720px;
+    overflow: hidden ;
+
+    background-repeat: no-repeat;
+
+   
+
+}
+
+.container{
+    margin-left: 100px;
+
+}
+
+
+
+
+.metaUpload{
+
+    position:relative;
+    margin-top: 30px;
+
+}
+
+.metauploadbutton{
+
+    position:relative;
+    margin-top: 20px;
+
+}
+
+
+.imageuploadbutton{
+    position:relative;
+    margin-top: 20px;
+    
+}
+
+#clearButton{
+    margin-top: 20px;
+}
+
+#fillButton{
+    margin-left: 20px;
+    margin-top: 20px;
+    background-color: #fff;
+}
+
+.selectsite{
+    background-color: #fff;
+    color: black;
+}
