@@ -89,6 +89,7 @@ def get_random_data():
 
 
 def get_db(dbname='POS', tablename='Heatmapstore', user="postgres", password='admin', host='localhost', port=5432, date='', stime='', etime=''):
+    print('user={}, password={}, database={}'.format(user, password, dbname))
     engine = create_engine(
         'postgresql://{}:{}@{}:{}/{}'.format(user, password, host, port, dbname))
     with engine.connect() as conn:
@@ -110,8 +111,8 @@ def get_data():
     return df
 
 
-@app.route('/api/heatmaps', methods=["POST", "GET"])
-@cross_origin(origins='*')
+@ app.route('/api/heatmaps', methods=["POST", "GET"])
+@ cross_origin(origins='*')
 def data_retiver():
     if request.method == 'POST':
         data = request.form['polygon']
@@ -131,8 +132,8 @@ def data_retiver():
         tablename = request.args.get('tablename')
     # out=heatmap_gen(image,polygonfilter(get_db(dbname='POS', user="postgres", password='dummy', host='localhost', port=5432, date=date, stime=stime, etime=etime), data))
     # out = [ date, stime, etime, request.method]
-    out = get_json(polygonfilter(get_db(dbname='POS', user="postgres", password='dummy', host='localhost',
-                   port=5432, date=date, stime=stime, etime=etime, tablename=tablename), data), strength)
+    out = get_json(polygonfilter(get_db(dbname='POS', user="postgres", password='admin', host='localhost',
+                                        port=5432, date=date, stime=stime, etime=etime, tablename=tablename), data), strength)
     return out
 
 
