@@ -34,6 +34,8 @@ import 'toolcool-range-slider';
 
 var heatmapInstance;
 var points=[];
+var strength;
+var dwellTime=[];
 
 //slide
 var sliderStrength;
@@ -42,7 +44,7 @@ function Heatmap() {
 
   function UploadImage() {
     const [image, setImage] = useState(null);
-  function handleImageUpload(event) {
+    function handleImageUpload(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
 
@@ -79,7 +81,8 @@ function Heatmap() {
         drawerP.height="480";
         var ctx = drawerP.getContext('2d');
         ctx.beginPath();
-      canvas.onclick = function(e) {
+
+        canvas.onclick = function(e) {
         var x = e.layerX;
         var y = e.layerY;
         //heatmapInstance.addData({ x: x, y: y, value: 100 });
@@ -156,6 +159,7 @@ function Heatmap() {
   }
   
 
+//Heat Map
 
   function HeatMapButton() {
     const [count, setCount] = useState(0); // Here u can change the code to run heatmap code
@@ -165,6 +169,7 @@ function Heatmap() {
      
         setCount(state => state + 1);
         var data={};
+        console.log({dwellTime:dwellTime,sliderStrength:strength})
         const endpoint = getHeatMapendpoint('localhost',5000,'27-04-2023','120000','130000',points, strength,'Heatmapstore')
         //const endpoint = getHeatMapendpoint('localhost',5000,'09-05-2023','35710','40513',points, strength,'Heatmapstore1')
         //const endpoint = getHeatMapendpoint('localhost',5000,'08-05-2023','182300','182400',points, strength,'Heatmapstore2')
@@ -224,10 +229,12 @@ function UploadMetaFile() {
 
 // Dwell Time Slider
   function MyRangeSlider() {
-    const [value, setValue] = React.useState([0, 24]);
+    const [value, setValue] = React.useState([6, 20]);
   
     const handleChange = (event, newValue) => {
       setValue(newValue);
+      dwellTime=newValue;
+      console.log(newValue);
     };
   
     return (
@@ -241,10 +248,10 @@ function UploadMetaFile() {
           max={24}
           step={1}
           marks={[
-            { value: 0, label: '00' },
-            { value: 3, label: '03' },
-            { value: 6, label: '06' },
-            { value: 9, label: '09' },
+            { value: 0, label: '0' },
+            { value: 3, label: '3' },
+            { value: 6, label: '6' },
+            { value: 9, label: '9' },
             { value: 12, label: '12' },
             { value: 15, label: '15' },
             { value: 18, label: '18' },
@@ -260,29 +267,30 @@ function UploadMetaFile() {
 
   //Strength Slider
 
-
-
-  const [strength, setStrength] = useState(20);
-
-  const onStrengthChange = (e) =>{
-    setStrength(state => e.target.value)
-  }
   
+
   function StrengthSlider() {
+
+    const onStrengthChange = (event,Newstrength) =>{
+      console.log(Newstrength);
+      strength=Newstrength;
+
+    }
+   
+    
+
     return (
       <Box width={300}>
-        {/* <Slider
-          size="small"
-          defaultValue={70}
-          aria-label="Small"
-          valueLabelDisplay="auto"
-        /> */}
-        <Slider value={strength} onChange={onStrengthChange} defaultValue={50} aria-label="Default" valueLabelDisplay="auto" />
-        
-      </Box>
-      
-      
+        <Slider  
+       
+        onChange={onStrengthChange} 
+        defaultValue={50} 
+       
+        valueLabelDisplay="auto" />
+      </Box> 
     );
+
+    
 
    
     
@@ -315,7 +323,7 @@ function UploadMetaFile() {
       )
     )
   );
-}
+  }
 
 function SelectCamera() {
   const [camera, setCamera] = React.useState('');
@@ -353,8 +361,7 @@ function FromDate() {
   
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <p>From</p>
-      <DatePicker/>
+      <DatePicker label="From"/>
     </LocalizationProvider>
   );
 }
@@ -363,29 +370,28 @@ function ToDate() {
   
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <p>To</p>
-      <DatePicker 
-       />
+      
+      <DatePicker label="To" />
     </LocalizationProvider>
   );
 }
 
 
 //Table
-// function DataLog() {
-//   const { data } = useDemoData({
-//     dataSet: "none",
-//     rowLength: 100,
-//     maxColumns: 6,
-//   });
+function DataLog() {
+  const { data } = useDemoData({
+    dataSet: "none",
+    rowLength: 100,
+    maxColumns: 6,
+  });
 
-//   return (
+  return (
     
-//     <div className='table' style={{ height: 400, width: "100%" }}>
-//       <DataGrid {...data} slots={{ toolbar: GridToolbar }} />
-//     </div>
-//   );
-// }
+    <div className='table' style={{ height: 400, width: "100%" }}>
+      <DataGrid {...data} slots={{ toolbar: GridToolbar }} />
+    </div>
+  );
+}
 
 
 
@@ -397,7 +403,7 @@ function ToDate() {
       {/* Left Container */}
     <div className='container left'>
       {/* Title */}
-      <h3>Heat Map</h3>
+      <h2>Heat Map</h2>
       {/* DropDown */}
      <div className="selectcamera">
       <SelectSite /> 
@@ -427,12 +433,11 @@ function ToDate() {
      </div>
      </div>
      <div className="StrengthSlider">
+      
      <p>Strength</p>
      <StrengthSlider/>
      </div>
-     {/* <div className='datalogtable'>
-      <DataLog/>
-      </div> */}
+     
      <div className="GenHeat">
      <HeatMapButton/>
      </div>
