@@ -33,9 +33,17 @@ import 'toolcool-range-slider';
 
 
 var heatmapInstance;
-var points=[];
-var strength;
-var dwellTime=[];
+var points=[[]];
+var strength=50;
+var dwellTime=[9, 20];
+var data={};
+var fromdate;
+var Todate;
+var siteval=4;
+var cameraval=1;
+var dates=["27-04-2023","09-05-2023","08-05-2023"];
+var tables=['Heatmapstore','Heatmapstore1','Heatmapstore2']
+
 
 //slide
 var sliderStrength;
@@ -83,41 +91,43 @@ function Heatmap() {
         ctx.beginPath();
 
         canvas.onclick = function(e) {
-        var x = e.layerX;
-        var y = e.layerY;
-        //heatmapInstance.addData({ x: x, y: y, value: 100 });
-        console.log([x,y]);
-        points.push([x,y]);
-        console.log(points);
-        var drawerP=document.getElementById("drawerPoint");
-        //drawerP.style.maxWidth="720px";
-        //drawerP.style.maxHeight="480px";
-        if(points.length===1){
+          var pointz= points[points.length-1];
+          var x = e.layerX;
+          var y = e.layerY;
+          //heatmapInstance.addData({ x: x, y: y, value: 100 });
+          console.log([x,y]);
+          pointz.push([x,y]);
+          
+          var drawerP=document.getElementById("drawerPoint");
+          //drawerP.style.maxWidth="720px";
+          //drawerP.style.maxHeight="480px";
           var ctx = drawerP.getContext('2d');
-          ctx.beginPath();
-          var dest=points[0]
-          ctx.moveTo(dest[0],dest[1])
-        }
-        if(points.length>1){
-          var ctx = drawerP.getContext('2d');
-          //ctx.beginPath();
-          //var dest=points[0]
-          //ctx.moveTo(dest[0],dest[1])
-          //for(var i = 0; i < points.length-1;i += 1){
-            dest=points[points.length-1]
-            ctx.lineTo(dest[0],dest[1]);
-          //}
-          ctx.strokeStyle = "#000000";
-          ctx.lineWidth = 5;
-          ctx.stroke();
-        }
+          if(pointz.length===1){
+            ctx.beginPath();
+            var dest=pointz[0]
+            ctx.moveTo(dest[0],dest[1])
+          }
+          if(pointz.length>1){
+            console.log({pointz:pointz});
+            //ctx.beginPath();
+            //var dest=points[0]
+            //ctx.moveTo(dest[0],dest[1])
+            //for(var i = 0; i < points.length-1;i += 1){
+              dest=pointz[pointz.length-1]
+              ctx.lineTo(dest[0],dest[1]);
+            //}
+            ctx.strokeStyle = "#000000";
+            ctx.lineWidth = 5;
+            ctx.stroke();
+          }
+          points[points.length-1]=pointz;
       };
     };
 
     reader.readAsDataURL(file);
   }
   function clearData (){
-    points=[];
+    points=[[]];
     console.log(points);
     var drawerP=document.getElementById("drawerPoint");
     var ctx = drawerP.getContext('2d');
@@ -125,8 +135,10 @@ function Heatmap() {
     heatmapInstance.setData({max:100,data:[{x:0,y:0,value:0}]});
     //heatmapInstance = h337.addData(config);
   }
+
   function complete (){
-    if(points.length>2){
+    var pointz=points[points.length-1];
+    if(pointz.length>2){
       var drawerP=document.getElementById("drawerPoint");
       var ctx = drawerP.getContext('2d');
       //var dest=points[0]
@@ -138,6 +150,17 @@ function Heatmap() {
       ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
       ctx.fill();  
     
+  }
+}
+  function new_poly (){
+    //heatmapInstance = h337.addData(config);
+    var pointz=points[points.length-1];
+    if(pointz.length>2){
+      var drawerP=document.getElementById("drawerPoint");
+      var ctx = drawerP.getContext('2d');
+      complete();
+      ctx.beginPath();
+      points.push([]);
   }
 }
 
@@ -152,6 +175,7 @@ function Heatmap() {
       
       <Button variant="contained" id="clearButton" onClick={clearData}>Clear</Button>
       <Button variant="outlined" id="fillButton" onClick={complete}>Fill</Button>
+      <Button variant="outlined" id="fillButton" onClick={new_poly}>New Polygon</Button>
       </div>
 
   ); //{image && <img className='imageclass' src={image} alt="Uploaded Image" />} 
@@ -168,12 +192,13 @@ function Heatmap() {
     async function handleClick() {
      
         setCount(state => state + 1);
-        var data={};
-        console.log({dwellTime:dwellTime,sliderStrength:strength})
-        const endpoint = getHeatMapendpoint('localhost',5000,'27-04-2023','120000','130000',points, strength,'Heatmapstore')
+        console.log({dwellTime:dwellTime,sliderStrength:strength,points:points})
+        const endpoint = getHeatMapendpoint('localhost',5000,dates[cameraval],dwellTime[0]*10000,dwellTime[1]*10000,JSON.stringify(points), strength,tables[cameraval])
+        //const endpoint = getHeatMapendpoint('localhost',5000,'27-04-2023','120000','130000',JSON.stringify(points), strength,'Heatmapstore')
         //const endpoint = getHeatMapendpoint('localhost',5000,'09-05-2023','35710','40513',points, strength,'Heatmapstore1')
         //const endpoint = getHeatMapendpoint('localhost',5000,'08-05-2023','182300','182400',points, strength,'Heatmapstore2')
         const success = await getheatmapdata(endpoint);
+        data=success;
         console.log({data:success})
         heatmapInstance.setData({max:100,data:success});
     }
@@ -229,7 +254,7 @@ function UploadMetaFile() {
 
 // Dwell Time Slider
   function MyRangeSlider() {
-    const [value, setValue] = React.useState([6, 20]);
+    const [value, setValue] = React.useState(dwellTime);
   
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -272,8 +297,14 @@ function UploadMetaFile() {
   function StrengthSlider() {
 
     const onStrengthChange = (event,Newstrength) =>{
-      console.log(Newstrength);
+      //console.log(Newstrength);
       strength=Newstrength;
+      if(data.length>0){
+        for(var i=0;i<data.length;i++){
+          data[i].value=strength;
+        }
+        heatmapInstance.setData({max:100,data:data});
+      }
 
     }
    
@@ -302,6 +333,8 @@ function UploadMetaFile() {
 
   function handleChange(event) {
     setSite(event.target.value);
+    siteval=event.target.value;
+    console.log(siteval);
   }
 
   return (
@@ -314,12 +347,13 @@ function UploadMetaFile() {
         label: "Site",
         onChange: handleChange
       },
-        React.createElement(MenuItem, { value: "" },
+        React.createElement(MenuItem, { value: 0 },
           React.createElement("em", null, "None")
         ),
-        React.createElement(MenuItem, { value: 10 }, "Nike"),
-        React.createElement(MenuItem, { value: 20 }, "Demo1"),
-        React.createElement(MenuItem, { value: 30 }, "Demo2")
+        React.createElement(MenuItem, { value: 1 }, "Nike"),
+        React.createElement(MenuItem, { value: 2 }, "Demo1"),
+        React.createElement(MenuItem, { value: 3 }, "Demo2"),
+        React.createElement(MenuItem, { value: 4 }, "Demo")
       )
     )
   );
@@ -330,6 +364,8 @@ function SelectCamera() {
 
   function handleChange(event) {
     setCamera(event.target.value);
+    cameraval=event.target.value;
+    console.log(cameraval);
   }
 
   return (
@@ -345,9 +381,9 @@ function SelectCamera() {
         React.createElement(MenuItem, { value: "" },
           React.createElement("em", null, "None")
         ),
-        React.createElement(MenuItem, { value: 10 }, "CCTV1"),
-        React.createElement(MenuItem, { value: 20 }, "CCTV2"),
-        React.createElement(MenuItem, { value: 30 }, "CCTV3")
+        React.createElement(MenuItem, { value: 0 }, "CCTV1"),
+        React.createElement(MenuItem, { value: 1 }, "CCTV2"),
+        React.createElement(MenuItem, { value: 2 }, "CCTV3")
       )
     )
   );
@@ -357,23 +393,40 @@ function SelectCamera() {
 //From Date Picker Function
 
 
+//From Date Picker Function
+
 function FromDate() {
+
+  const [value, setValue] = React.useState(dayjs());
+
+  console.log(value);
+  console.log(value.format('DD-MM-YYYY'));
+
+  fromdate =value;
+
   
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker label="From"/>
+      <DatePicker label="From" value={value}
+          onChange={(newValue) => setValue(newValue)}/>
     </LocalizationProvider>
   );
 }
 
 function ToDate() {
+
+  const [value, setValue] = React.useState(dayjs());
+  console.log(value);
+  console.log(value.format('DD-MM-YYYY'));
+
+  Todate =value;
   
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      
-      <DatePicker label="To" />
+      <DatePicker label="To" value={value} 
+      onChange={(newValue) => setValue(newValue)}/>
     </LocalizationProvider>
-  );
+    );
 }
 
 

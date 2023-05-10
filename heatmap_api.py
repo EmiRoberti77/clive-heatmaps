@@ -18,6 +18,17 @@ app = Flask(__name__)
 CORS(app)
 
 
+def get_ids(df, polys):
+    idz = []
+    for polyps in polys:
+        # polyps=[[x,y] for x,y in zip(polyp[::2],polyp[1:][::2])]
+        df['point'] = df.apply(lambda row: Point(row['x'], row['y']), axis=1)
+        polygon = Polygon(polyps)
+        df_1 = df[df['point'].apply(polygon.contains)].copy()
+        idz += list(set(df_1['id'].to_list()))
+    return set(idz)
+
+
 def polygonfilter(df, polyp):
     # print(polyp)
     df2 = pd.DataFrame()
@@ -25,12 +36,12 @@ def polygonfilter(df, polyp):
     df2['y'] = df['Y']
     df2['id'] = df['Object id']
     df = df2.copy()
-    if (len(polyp) > 0):
-        polyp = [[x, y] for x, y in zip(polyp[::2], polyp[1:][::2])]
-        df['point'] = df.apply(lambda row: Point(row['x'], row['y']), axis=1)
-        polygon = Polygon(polyp)
-        df_1 = df[df['point'].apply(polygon.contains)].copy()
-        ids = set(df_1['id'].to_list())
+    if (len(polyp[0]) > 0):
+        # polyp=[[x,y] for x,y in zip(polyp[::2],polyp[1:][::2])]
+        # df['point'] = df.apply(lambda row: Point(row['x'],row['y']),axis=1)
+        # polygon = Polygon(polyp)
+        # df_1 = df[df['point'].apply(polygon.contains)].copy()
+        ids = get_ids(df, polyp)  # set(df_1['id'].to_list())
         df_f = df.loc[df['id'].isin(ids)]
         df2 = df_f.copy()
         data = df2.drop(['id', 'point'], axis=1).to_numpy()
@@ -88,8 +99,7 @@ def get_random_data():
     return df
 
 
-def get_db(dbname='POS', tablename='Heatmapstore', user="postgres", password='admin', host='localhost', port=5432, date='', stime='', etime=''):
-    print('user={}, password={}, database={}'.format(user, password, dbname))
+def get_db(dbname='POS', tablename='Heatmapstore', user="postgres", password='dummy', host='localhost', port=5432, date='', stime='', etime=''):
     engine = create_engine(
         'postgresql://{}:{}@{}:{}/{}'.format(user, password, host, port, dbname))
     with engine.connect() as conn:
@@ -111,8 +121,8 @@ def get_data():
     return df
 
 
-@ app.route('/api/heatmaps', methods=["POST", "GET"])
-@ cross_origin(origins='*')
+@app.route('/api/heatmaps', methods=["POST", "GET"])
+@cross_origin(origins='*')
 def data_retiver():
     if request.method == 'POST':
         data = request.form['polygon']
@@ -123,7 +133,7 @@ def data_retiver():
         image = request.files.get('imagefile', '')
     else:
         data = request.args.get('polygon')
-        data = json.loads(data)
+        data = json.loads(data)[0]
         date = request.args.get('date')
         stime = request.args.get('stime')
         etime = request.args.get('etime')
@@ -132,8 +142,9 @@ def data_retiver():
         tablename = request.args.get('tablename')
     # out=heatmap_gen(image,polygonfilter(get_db(dbname='POS', user="postgres", password='dummy', host='localhost', port=5432, date=date, stime=stime, etime=etime), data))
     # out = [ date, stime, etime, request.method]
+    print(data, len(data))
     out = get_json(polygonfilter(get_db(dbname='POS', user="postgres", password='admin', host='localhost',
-                                        port=5432, date=date, stime=stime, etime=etime, tablename=tablename), data), strength)
+                   port=5432, date=date, stime=stime, etime=etime, tablename=tablename), data), strength)
     return out
 
 
