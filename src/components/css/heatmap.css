@@ -1,80 +1,114 @@
 body {
-    background-image: linear-gradient(
-    to bottom,
-    rgba(20, 52, 155, 0.874),
-    rgba(0, 9, 40, 1)
-  );
-  color:#fff;
-  }
-
-  #fullcontainer {
-    height:100vh;
-    width:100%;
-  }
   
-  #fullcontainer > .left {
-    float:left;
-    margin-left: 50px;
-    position:relative;
-    margin-top: 30px;
-   
-  }
-  
-  #fullcontainer > .right {
-    float:right;
-   
-  }
+  background: linear-gradient(100.1deg, #061b5f 0%, #2D4FBC 68.75%, #2C4DC7 100%);
+color:#fff;
+}
 
+.SmallText{
+  font-size: small;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  color: #969696;
+}
+
+#fullcontainer {
+  height:100vh;
+  width:100%;
+  overflow: hidden;
+}
+
+#fullcontainer > .left {
+  float:left;
+  margin-left: 50px;
+  position:relative;
+  margin-top: 30px;
  
-  .rightPannel{
-    color: black;
-    position: relative;
-    text-align: left;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    margin-right: 0;
-    background-color: #fff;
+}
 
-  }
+#fullcontainer > .right {
+  float:right;
+ 
+}
 
+.dataTable{
+  margin-top: 30px;
   
+}
 
-  .rightPannelContent{
-    margin-top: 100px;
-    width: 100%;
-    margin-left: 50px;
-    
+ .css-6h1dhi-MuiDataGrid-root{
+  background-color: white;
+  width:100%;
+  height: 300px;
+} 
 
-  }
+.rightPannel{
 
-  .RangeSlider{
-    display: flex;
-    flex-direction: column;
-    
-  }
+  color: rgb(51, 51, 51);
+  position: relative;
+  text-align: left;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin-right: 0;
+  background: linear-gradient(90deg, rgba(228,228,228,1) 0%, rgba(242,242,242,1) 44%, rgba(255,255,255,1) 100%);
+  padding-left: 10px;
+  padding-right:10px;
+  width: 30%;
+
+}
+
+.selectcamera{
+  margin-left: 0;
+}
+
+.FromDate{
+  margin-bottom: 20px;
+}
+
+
+
+.rightPannelContent{
+  margin-top: 25px;
+  width: 100%;
+  margin-left: 50px;
+ 
+}
+
+.RangeSlider{
+  margin-top: 60px;
+}
+
+
+
+
+
+#demo-select-small-label{
+  color: #000000;
+ 
+}
+
 
 
 
 .preview{
-    position:relative;
-    margin-top: 25px;
-    border:1px solid #afafaf;
-    border-radius: 5px;
-    background-color: rgb(255, 255, 255);
-    height: 480px;
-    width: 720px;
-    overflow: hidden ;
+  position:relative;
+  margin-top: 25px;
+  border:1px solid #afafaf;
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  height: 480px;
+  width: 720px;
+  overflow: hidden ;
 
-    background-repeat: no-repeat;
+  background-repeat: no-repeat;
 
-   
+ 
 
 }
 
 .container{
-    margin-left: 100px;
+  margin-left: 100px;
 
 }
 
@@ -83,36 +117,190 @@ body {
 
 .metaUpload{
 
-    position:relative;
-    margin-top: 30px;
+  position:relative;
+  margin-top: 30px;
 
 }
 
 .metauploadbutton{
 
-    position:relative;
-    margin-top: 20px;
+  position:relative;
+  margin-top: 20px;
 
 }
 
 
 .imageuploadbutton{
-    position:relative;
-    margin-top: 20px;
-    
+  position:relative;
+  margin-top: 20px;
+  
 }
 
 #clearButton{
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 #fillButton{
-    margin-left: 20px;
-    margin-top: 20px;
-    background-color: #fff;
+  margin-left: 20px;
+  margin-top: 20px;
+  background-color: #fff;
 }
 
 .selectsite{
-    background-color: #fff;
-    color: black;
+  background-color: #fff;
+  color: black;
 }
+
+.StrengthSlider{
+  margin-top: 30px;
+}
+
+.GenHeat{
+  margin-top: 30px;
+}
+
+
+/* New CSS */
+
+.HeatmapPage{
+  
+  height: 100vh;
+  background-color:linear-gradient linear-gradient(0deg, #091640 10%, #2D4FBC 68.75%, #2C4DC7 100%); 
+}
+
+/* Top Container */
+
+.TopContainer{
+  display: flex;
+  height: 100px;
+  align-items: center;
+  background: #091640;
+  margin-top: 25px;
+  margin-left: 25px;
+  margin-right: 25px;
+  border-radius: 15px;
+  
+ 
+}
+
+.TopContent{
+  align-items: center;
+  display: flex;
+
+  width:100%;
+  padding-left: 25px;
+  padding-right:25px;
+}
+
+.SelectSiteDropDown{
+  float: right;
+  display: flex;
+  margin-right: 25px;
+}
+
+#demo-select-small{
+background: #4371ED;
+border-radius: 5px;
+width: 150px;
+height: 20px;
+
+}
+
+#demo-select-small-label{
+  color: #fff;
+}
+
+.MainContainer{
+  margin-top: 25px;
+  margin-left: 25px;
+  margin-right: 25px;
+  border-radius: 15px;
+  background: linear-gradient(180deg, rgba(11, 18, 67, 0.806) 50%, rgba(19, 53, 165, 0.5) 100%);
+  backdrop-filter: blur(10px);
+
+  
+}
+
+.MainContent{
+  display: flex;
+  column-gap: 25px;
+  padding-left: 25px;
+  padding-right:25px;
+  padding-bottom: 20px;
+  padding-top: 20px;
+
+}
+
+
+
+
+.config_pannel{
+
+  margin-top: 25px;
+  position:absolute;
+  right: 25px;
+  width: 30%;
+}
+
+.date{
+  display: flex;
+  column-gap: 30px;
+}
+
+/* .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root{
+  background-color: #4371ED;
+  color: #fff;
+} */
+
+.MuiFormControl-root {color: white;}
+
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root{
+  background-color: #4371ED;
+  border-radius: 5px;
+  color: white;
+}
+
+
+.DwellTimeBox{
+position: relative;
+box-sizing: border-box;
+width: 100%;
+height: 300px;
+border: 1px solid #24409B;
+border-radius: 10px;
+
+
+}
+
+.DwellTimeContent{
+  padding-left: 25px;
+  padding-right: 25px;;
+  
+}
+
+.MuiSlider-markLabel.css-yafthl-MuiSlider-markLabel{
+  color: rgb(209, 209, 209);
+}
+
+.MuiSlider-markLabel.MuiSlider-markLabel.MuiSlider-markLabelActive.css-1eoe787-MuiSlider-markLabel{
+  color: white;
+}
+
+.css-1jy569b-MuiFormLabel-root-MuiInputLabel-root{
+
+  color: #fff !important;
+
+}
+
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+
+  color: #fff !important;
+
+}
+
+.MuiInputBase-input .MuiOutlinedInput-input .Mui-readOnly .MuiInputBase-readOnly .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+  color: #fff !important;
+}
+
+
+

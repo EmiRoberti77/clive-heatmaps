@@ -452,54 +452,114 @@ function DataLog() {
 // Main Return
 
   return (
-    <div id='fullcontainer'>
-      {/* Left Container */}
-    <div className='container left'>
-      {/* Title */}
-      <h2>Heat Map</h2>
-      {/* DropDown */}
-     <div className="selectcamera">
-      <SelectSite /> 
-      <SelectCamera />
+    //OLD Design
+    // <div id='fullcontainer'>
+    //   {/* Left Container */}
+    // <div className='container left'>
+    //   {/* Title */}
+    //   <h2>Heat Map</h2>
+    //   {/* DropDown */}
+    //  <div className="selectcamera">
+    //   <SelectSite /> 
+    //   <SelectCamera />
+    //   <UploadImage/>
+    //   </div>
+    // </div>
+
+    // <div className='center'>
+
+    // </div>
+
+    // <div className='rightPannel right'>
+    // <div className='rightPannelContent'>
+    // <h3>Analysis Config</h3>
+    // <div className='date'>
+    // <div class="FromDate"><FromDate/></div>
+    // <div class="Fromto"><ToDate/></div>
+    // </div>
+    // <div className="RangeSlider">
+    //  <p>Set Dwell Time in Min</p>
+    //  <MyRangeSlider />
+    //  <div className='SmallText'>
+    //   <div>{sliderStrength}</div>
+    //  <p>Total Tracks </p>
+    //  <p>Total Dwell Points</p>
+    //  </div>
+    //  </div>
+    //  <div className="StrengthSlider">
+      
+    //  <p>Strength</p>
+    //  <StrengthSlider/>
+    //  </div>
+     
+    //  <div className="GenHeat">
+    //  <HeatMapButton/>
+    //  </div>
+
+
+
+    // </div>
+    
+    // </div>
+
+    // </div>
+
+    //New Design
+    <div className='HeatmapPage'>
+      
+      <div className='TopContainer'>
+        <div className='TopContent'>
+        <div className='Title'>
+        <h2>Heat Map</h2>
+        </div>
+        </div>
+        <div className='SelectSiteDropDown'>
+        <SelectSite /> 
+        <SelectCamera />
+        </div>
+      </div>
+
+      <div className='MainContainer'>
+
+      <div className='MainContent'>
+      
+      <div className='Canvas_Preview'>
       <UploadImage/>
       </div>
-    </div>
-
-    <div className='center'>
-
-    </div>
-
-    <div className='rightPannel right'>
-    <div className='rightPannelContent'>
-    <h3>Analysis Config</h3>
-    <div className='date'>
-    <div class="FromDate"><FromDate/></div>
-    <div class="Fromto"><ToDate/></div>
-    </div>
-    <div className="RangeSlider">
-     <p>Set Dwell Time in Min</p>
-     <MyRangeSlider />
-     <div className='SmallText'>
-      <div>{sliderStrength}</div>
-     <p>Total Tracks </p>
-     <p>Total Dwell Points</p>
-     </div>
-     </div>
-     <div className="StrengthSlider">
       
-     <p>Strength</p>
-     <StrengthSlider/>
-     </div>
-     
-     <div className="GenHeat">
-     <HeatMapButton/>
-     </div>
+
+      <div className='config_pannel'>
+      
+      <div className='date'>
+      {/* FRom Date */}
+      <div class="FromDate"><FromDate/></div>
+      {/* To date */}
+      <div class="Fromto"><ToDate/></div>
+      </div>
+      <div className='DwellTimeBox'>
+      <div className='DwellTimeContent'>
+      <p>Set Dwell Time in Min</p>
+      <MyRangeSlider  />
+      <div className='SmallText'>
+      <p>Total Tracks </p>
+      <p>Total Dwell Points</p>
+      </div>
+      <p>Strength</p>
+      <StrengthSlider/>
+      </div>
+      </div>
+      {/* Heat Map Button */}
+      <div className="GenHeat">
+      <HeatMapButton/>
+      </div>
+  
+      </div>
+
+      </div>
+      </div>
 
 
 
-    </div>
-    
-    </div>
 
     </div>
     
